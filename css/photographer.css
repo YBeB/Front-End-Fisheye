@@ -7,13 +7,29 @@
     height: 300px;
     margin: 0 100px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-
+    padding: 20px;
 
 
 }
+.photograph-header h1{
+font-size:40px ;
+color:#d3573C;
+font-weight: 300;
+}
 
+.photograph-header h2{
+color:#901C1C;
+font-weight: 500;
+padding-top: 5px;
+
+}
+
+.text-profil p{
+    padding-top: 10px;
+
+}
 .contact_button {
     font-size: 20px;
     font-weight: bold;

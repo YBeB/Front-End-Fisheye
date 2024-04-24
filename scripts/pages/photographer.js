@@ -19,7 +19,7 @@ async function getPhotographers() {
 async function displayPhotographer() {
   const photographers = await getPhotographers();
   const photographerHeader = document.querySelector(".photograph-header");
-  const textPhotographer = document.getElementById("text-profil")
+  const textPhotographer = document.querySelector(".text-profil")
   const photographer = photographers.find((p) => p.id.toString() === id);
   if (photographer ) {
     let profilePicture = document.createElement("img");
@@ -39,8 +39,14 @@ async function displayPhotographer() {
     
 
   }else{
+    let profileName = document.createElement("h1");
+    profileName.textContent = "Aucun photographe sous cet id";
+    textPhotographer.appendChild(profileName);
 console.log("Aucun photographe n'est accessible sur cet id")
 
   }
+
+  
 }
 displayPhotographer()
+
