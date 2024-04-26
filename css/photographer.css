@@ -13,23 +13,25 @@
 
 
 }
-.photograph-header h1{
-font-size:40px ;
-color:#d3573C;
-font-weight: 300;
+
+.photograph-header h1 {
+    font-size: 40px;
+    color: #d3573C;
+    font-weight: 300;
 }
 
-.photograph-header h2{
-color:#901C1C;
-font-weight: 500;
-padding-top: 5px;
+.photograph-header h2 {
+    color: #901C1C;
+    font-weight: 500;
+    padding-top: 5px;
 
 }
 
-.text-profil p{
+.text-profil p {
     padding-top: 10px;
 
 }
+
 .contact_button {
     font-size: 20px;
     font-weight: bold;
@@ -96,8 +98,31 @@ form input {
     border: none;
     border-radius: 5px;
 }
-.profilePicture{    height: 200px;
+
+.profilePicture {
+    height: 200px;
     width: 200px;
     border-radius: 300px;
-    object-fit: cover;}
+    object-fit: cover;
+}
 
+.album-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+.album-container img {
+    margin: 40px;
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.album-container video {
+    margin: 40px;
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+}
