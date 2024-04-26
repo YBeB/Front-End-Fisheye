@@ -1,3 +1,4 @@
+// // Lance une requête pour récupérer les données des photographes depuis le fichier JSON.
 async function getPhotographers() {
   const url = "/data/photographers.json";
   try {
@@ -13,7 +14,7 @@ async function getPhotographers() {
   }
 }
 
-//Cette fonction permet d'appeler les media pour un photographe.
+//Recherche des médias (photos et vidéos ) qui sont associés à l'ID du photographe.  
 async function getMediaForPhotographer(photographerId) {
   const url = "/data/photographers.json";
   try {
@@ -22,7 +23,7 @@ async function getMediaForPhotographer(photographerId) {
       throw new Error("Impossible de chargé les données");
     }
     const data = await response.json();
-    //On retourne le média qui correspond à l'id du photographe.
+     // Filtre et retourne uniquement les médias correspondant à l'ID du photographe.
     return data.media.filter((item) => item.photographerId === photographerId);
   } catch (error) {
     console.error("Une erreur est survenue lors du chargement du JSON", error);
@@ -30,25 +31,22 @@ async function getMediaForPhotographer(photographerId) {
   }
 }
 
-// Création de la media factory
+// Factory pour créer les éléments multimédia (image ou vidéo) en fonction du type de média.
 class MediaFactory {
   static createMediaElement(media, photographerId) {
     const basePath = `./assets/images/${photographerId}/`;
     //Si un média est une image
     if (media.image) {
-      // Nous créons un element image
       const img = document.createElement("img");
-      // Avec comme source le chemin des image correspondant à l'id
       img.src = `${basePath}${media.image}`;
-      // Avec la description correspondante
+// Retourne un élément img configuré.
       img.alt = media.title;
       return img;
-      // Si le media est une vidéo
     } else if (media.video) {
-      //Nous créons un element vidéo
       const video = document.createElement("video");
       video.src = `${basePath}${media.video}`;
       video.controls = true;
+       // Retourne un élément video configuré.
       return video;
     }
     //Si le média n'est pas supporté , exemple : un audio alors message d'erreur
@@ -56,40 +54,33 @@ class MediaFactory {
   }
 }
 
-//Fonction qui prends en compte l'id du photographe
+//Affiche l'album d'un photographe dans le DOM 
 async function displayPhotographerAlbum(photographerId) {
-  // Ici on créer une constant pour appeler notre fonction fetch
   const mediaItems = await getMediaForPhotographer(photographerId);
-  // Ici nous selectionnant un element du Dom avec album container
   const albumContainer = document.querySelector(".album-container");
   mediaItems.forEach((media) => {
     try {
-      // Ici nous appelons notre class MediaFactory avec comme parametre media et l'id du photographe
+    // Crée un élément média et l'ajoute au conteneur d'album.
       const mediaElement = MediaFactory.createMediaElement(
         media,
         photographerId
       );
-      // Nous l'intégrerons dans l'element du dom avec la classe album-container
       albumContainer.appendChild(mediaElement);
     } catch (error) {
       console.error(error);
     }
   });
 }
-// Cette fonction permet d'afficher le profil d'un seul photographe
+// Affiche les informations du photographe sélectionné ainsi que son album.
 async function displayPhotographer() {
   let urlParams = new URLSearchParams(location.search);
   let id = urlParams.get("id");
-  // Nous appelons notre fetch
   const photographers = await getPhotographers();
-  // Ici je selectionne des elements avec differente classe dans le dom
   const textPhotographer = document.querySelector(".text-profil");
   const photographerHeader = document.querySelector(".photograph-header");
-  // La nous cherchons un id correspondant au photographe a afficher en nous basant sur l'id transporter par l'url et stocker dans la variable id
   const photographer = photographers.find((p) => p.id.toString() === id);
-  //Si il y a bien un photographe sous cet id
   if (photographer) {
-    //Nous création les differents element dans le DOM , tel que le portrait , la description , la citation et la localisation
+    // Création et affichage des éléments du profil du photographe.
     let profilePicture = document.createElement("img");
     profilePicture.src = `./assets/photographers/${photographer.portrait}`;
     profilePicture.classList.add("profilePicture");
@@ -106,14 +97,15 @@ async function displayPhotographer() {
     let profilCity = document.createElement("h2");
     profilCity.textContent = `${photographer.city}, ${photographer.country}`;
     profilCity.ariaLabel = `Localisation: ${photographer.city}, ${photographer.country}`;
-    // et nous les affichons  dans le Dom
+
     photographerHeader.appendChild(profilePicture);
     textPhotographer.appendChild(profileName);
     textPhotographer.appendChild(profilCity);
     textPhotographer.appendChild(profileTag);
-    // Ici nous appelons notre fonction qui affiche l'album avec le parametre l'id du photographe
+    // Appel de la fonction d'affichage de l'album.
     displayPhotographerAlbum(photographer.id);
   } else {
+    // S'il y a absence du photographe pour l'ID donné, affichage d'un message d'erreur.
     let profileName = document.createElement("h1");
     profileName.textContent = "Aucun photographe sous cet id";
     profileName.ariaLabel = "Message d'erreur : Aucun photographe sous cet id";
@@ -121,5 +113,5 @@ async function displayPhotographer() {
     console.log("Aucun photographe n'est accessible sur cet id");
   }
 }
-// Ici nous appelons notre fonction qui englobe tout
+// Initialisation de l'affichage du photographe.
 displayPhotographer();
