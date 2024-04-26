@@ -19,34 +19,43 @@ async function getPhotographers() {
 async function displayPhotographer() {
   const photographers = await getPhotographers();
   const photographerHeader = document.querySelector(".photograph-header");
-  const textPhotographer = document.querySelector(".text-profil")
   const photographer = photographers.find((p) => p.id.toString() === id);
-  if (photographer ) {
+  if (photographer) {
     let profilePicture = document.createElement("img");
     profilePicture.src = `./assets/photographers/${photographer.portrait}`;
     profilePicture.classList.add("profilePicture");
+    profilePicture.setAttribute("alt", `Portrait de ${photographer.name}`);
+    profilePicture.setAttribute(
+      "aria-label",
+      `Portrait de ${photographer.name}`
+    );
+
     let profileName = document.createElement("h1");
     profileName.textContent = photographer.name;
+
     let profileTag = document.createElement("p");
+    profileTag.setAttribute("aria-label", `Citation: ${photographer.tagline}`);
+
     profileTag.textContent = photographer.tagline;
-    let profilCity=document.createElement('h2')
-    profilCity.textContent=`${photographer.city},${photographer.country}`
+    let profilCity = document.createElement("h2");
+    profilCity.textContent = `${photographer.city},${photographer.country}`;
+    profilCity.setAttribute(
+      "aria-label",
+      `Localisation: ${photographer.city}, ${photographer.country}`
+    );
 
     photographerHeader.appendChild(profilePicture);
     textPhotographer.appendChild(profileName);
     textPhotographer.appendChild(profilCity);
     textPhotographer.appendChild(profileTag);
-    
-
-  }else{
+  } else {
     let profileName = document.createElement("h1");
     profileName.textContent = "Aucun photographe sous cet id";
+    profileName.setAttribute(
+      "aria-label",
+      "Message d'erreur : Aucun photographe sous cet"
+    );
     textPhotographer.appendChild(profileName);
-console.log("Aucun photographe n'est accessible sur cet id")
-
+    console.log("Aucun photographe n'est accessible sur cet id");
   }
-
-  
 }
-displayPhotographer()
-
