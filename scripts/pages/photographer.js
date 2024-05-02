@@ -1,10 +1,14 @@
-// // Lance une requête pour récupérer les données des photographes depuis le fichier JSON.
+// Création d'un tableau et d'un index pour parcourir les media via lightbox
+let currentMediaItems = [];
+let currentIndex = 0;
+
+// Lance une requête pour récupérer les données des photographes depuis le fichier JSON.
 async function getPhotographers() {
   const url = "/data/photographers.json";
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error("Impossible de chargé les données");
+      throw new Error("Impossible de charger les données");
     }
     const data = await response.json();
     return data.photographers;
@@ -13,17 +17,54 @@ async function getPhotographers() {
     return [];
   }
 }
+// Gère l'affichage de la lightbox pour les médias
+function openLightbox(index) {
+  const media = currentMediaItems[index];
+  const lightbox = document.getElementById("light-box");
+  const mediaContainer = document.getElementById("lightbox-media-container");
+  const basePath = `./assets/images/${media.photographerId}/`;
+  let mediaElement;
 
-//Recherche des médias (photos et vidéos ) qui sont associés à l'ID du photographe.  
+  mediaContainer.innerHTML = "";
+
+  if (media.image) {
+    mediaElement = document.createElement("img");
+    mediaElement.src = `${basePath}${media.image}`;
+    mediaElement.alt = media.title;
+  } else if (media.video) {
+    mediaElement = document.createElement("video");
+    mediaElement.src = `${basePath}${media.video}`;
+    mediaElement.controls = true;
+    mediaElement.alt = media.title;
+  }
+
+  mediaContainer.appendChild(mediaElement);
+
+  lightbox.style.display = "block";
+}
+// Fonction permettant d'aller dans le média suivant
+function nextMedia() {
+  if (currentIndex < currentMediaItems.length - 1) {
+    currentIndex++;
+    openLightbox(currentIndex);
+  }
+}
+// Fonction permettant d'aller dans le media precedent
+function previousMedia() {
+  if (currentIndex > 0) {
+    currentIndex--;
+    openLightbox(currentIndex);
+  }
+}
+//Recherche des médias (photos et vidéos ) qui sont associés à l'ID du photographe.
 async function getMediaForPhotographer(photographerId) {
   const url = "/data/photographers.json";
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error("Impossible de chargé les données");
+      throw new Error("Impossible de charger les données");
     }
     const data = await response.json();
-     // Filtre et retourne uniquement les médias correspondant à l'ID du photographe.
     return data.media.filter((item) => item.photographerId === photographerId);
   } catch (error) {
     console.error("Une erreur est survenue lors du chargement du JSON", error);
@@ -39,79 +80,99 @@ class MediaFactory {
     if (media.image) {
       const img = document.createElement("img");
       img.src = `${basePath}${media.image}`;
-// Retourne un élément img configuré.
+      // Retourne un élément img configuré.
       img.alt = media.title;
       return img;
     } else if (media.video) {
       const video = document.createElement("video");
       video.src = `${basePath}${media.video}`;
       video.controls = true;
-       // Retourne un élément video configuré.
+      // Retourne un élément video configuré.
       return video;
+    } else {
+      throw new Error("Type de media non supporté");
     }
-    //Si le média n'est pas supporté , exemple : un audio alors message d'erreur
-    throw new Error("Type de media non supporté");
   }
 }
+//Fonction pour fermer la lightbox associé a la croix
+function closeLightbox() {
+  const lightbox = document.getElementById("light-box");
+  lightbox.style.display = "none";
+}
 
-//Affiche l'album d'un photographe dans le DOM 
+//Fonction qui permet d'identifie les photo de l'album via l'id du photographe
 async function displayPhotographerAlbum(photographerId) {
   const mediaItems = await getMediaForPhotographer(photographerId);
+  currentMediaItems = mediaItems;
   const albumContainer = document.querySelector(".album-container");
-  mediaItems.forEach((media) => {
+  albumContainer.innerHTML = "";
+  mediaItems.forEach((media, index) => {
     try {
-    // Crée un élément média et l'ajoute au conteneur d'album.
       const mediaElement = MediaFactory.createMediaElement(
         media,
         photographerId
       );
+      mediaElement.addEventListener("click", () => {
+        currentIndex = index;
+        openLightbox(index);
+      });
       albumContainer.appendChild(mediaElement);
     } catch (error) {
       console.error(error);
     }
   });
 }
-// Affiche les informations du photographe sélectionné ainsi que son album.
+// Fonction pour affiché les informations et l'album du photographe
 async function displayPhotographer() {
   let urlParams = new URLSearchParams(location.search);
   let id = urlParams.get("id");
   const photographers = await getPhotographers();
   const textPhotographer = document.querySelector(".text-profil");
   const photographerHeader = document.querySelector(".photograph-header");
+  const contactMe = document.querySelector(".contact-me");
   const photographer = photographers.find((p) => p.id.toString() === id);
   if (photographer) {
-    // Création et affichage des éléments du profil du photographe.
     let profilePicture = document.createElement("img");
     profilePicture.src = `./assets/photographers/${photographer.portrait}`;
     profilePicture.classList.add("profilePicture");
     profilePicture.alt = `Portrait de ${photographer.name}`;
-    profilePicture.ariaLabel = `Portrait de ${photographer.name}`;
+    profilePicture.setAttribute(
+      "aria-label",
+      `Portrait de ${photographer.name}`
+    );
 
     let profileName = document.createElement("h1");
     profileName.textContent = photographer.name;
 
     let profileTag = document.createElement("p");
-    profileTag.ariaLabel = `Citation: ${photographer.tagline}`;
+    profileTag.setAttribute("aria-label", `Citation: ${photographer.tagline}`);
     profileTag.textContent = photographer.tagline;
 
     let profilCity = document.createElement("h2");
     profilCity.textContent = `${photographer.city}, ${photographer.country}`;
-    profilCity.ariaLabel = `Localisation: ${photographer.city}, ${photographer.country}`;
+    profilCity.setAttribute(
+      "aria-label",
+      `Localisation: ${photographer.city}, ${photographer.country}`
+    );
+
+    contactMe.textContent = `Contactez-moi ${photographer.name}`;
+    contactMe.setAttribute("aria-label", `Contactez-moi ${photographer.name}`);
 
     photographerHeader.appendChild(profilePicture);
     textPhotographer.appendChild(profileName);
     textPhotographer.appendChild(profilCity);
     textPhotographer.appendChild(profileTag);
-    // Appel de la fonction d'affichage de l'album.
     displayPhotographerAlbum(photographer.id);
   } else {
-    // S'il y a absence du photographe pour l'ID donné, affichage d'un message d'erreur.
     let profileName = document.createElement("h1");
-    profileName.textContent = "Aucun photographe sous cet id";
-    profileName.ariaLabel = "Message d'erreur : Aucun photographe sous cet id";
+    profileName.textContent = "Aucun photographe trouvé pour cet ID";
+    profileName.setAttribute(
+      "aria-label",
+      "Message d'erreur : Aucun photographe trouvé pour cet ID"
+    );
     textPhotographer.appendChild(profileName);
-    console.log("Aucun photographe n'est accessible sur cet id");
+    console.log("Aucun photographe n'est accessible sur cet ID");
   }
 }
-// Initialisation de l'affichage du photographe.
+
 displayPhotographer();

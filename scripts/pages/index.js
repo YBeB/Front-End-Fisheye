@@ -24,6 +24,7 @@ async function displayData(photographers) {
   });
 }
 
+
 async function init() {
   try {
     const photographers = await getPhotographers();
