@@ -73,7 +73,7 @@
     font-size: 60px;
     font-weight: normal;
     padding-bottom: 15px;
-   
+
 }
 
 form {
@@ -102,10 +102,12 @@ form input {
     border: none;
     border-radius: 5px;
 }
-#message{
-height:200px;
+
+#message {
+    height: 200px;
 
 }
+
 .profilePicture {
     height: 200px;
     width: 200px;
@@ -116,7 +118,7 @@ height:200px;
 .album-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-  }
+}
 
 .album-container img {
     margin: 40px;
@@ -133,30 +135,33 @@ height:200px;
     object-fit: cover;
     border-radius: 5px;
 }
+
 #contact_modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 440;
-    border: 2px solid black; 
-    width: 100%; 
-    height: 100%; 
-    overflow-y: auto; 
+    border: 2px solid black;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .bground {
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
-    
+
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 400; 
+    z-index: 400;
 }
 
-.modal h2{display: flex;
-justify-content: start;}
+.modal h2 {
+    display: flex;
+    justify-content: start;
+}
 
 #light-box {
     display: none;
@@ -179,7 +184,8 @@ justify-content: start;}
     background-color: transparent;
     border: none;
     cursor: pointer;
-    z-index: 501; /* Ensure it's above other content */
+    z-index: 501;
+    /* Ensure it's above other content */
 }
 
 .light-box-body {
@@ -190,7 +196,7 @@ justify-content: start;}
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80%; 
+    width: 80%;
     height: auto;
     max-height: 80%;
 }
@@ -202,7 +208,8 @@ justify-content: start;}
     object-fit: contain;
 }
 
-.prev-button, .next-button {
+.prev-button,
+.next-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -211,11 +218,12 @@ justify-content: start;}
     cursor: pointer;
     width: 50px;
     height: 50px;
-    z-index: 501; 
+    z-index: 501;
     fill: red;
 }
+
 .prev-button {
-    left: 20px; 
+    left: 20px;
 }
 
 .next-button {
@@ -224,8 +232,8 @@ justify-content: start;}
 
 #light-box #lightbox-media-container img,
 #light-box #lightbox-media-container video {
-  max-width: 100vw;  /* Adjusts the width to a maximum of 90% of the lightbox container */
-  max-height: 80vh; 
+    max-width: 100vw;
+    max-height: 80vh;
 }
 
 .media-item-container {
@@ -233,39 +241,32 @@ justify-content: start;}
 }
 
 .media-item {
-    width: 100%; /* Assure que les images et vidéos s'adaptent à la largeur du conteneur */
+    width: 100%;
     display: block;
 }
 
-.like-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-}
 
-.like-counter {
-    font-weight: bold;
-}
 
-.like-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.like-button-icon {
-    width: 24px; /* Taille de l'icône */
-    height: 24px;
-}
-.total-likes-container {
+#total-likes {
     position: fixed;
     bottom: 10px;
-    left: 10px;
+    right: 10px;
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 8px 15px;
     border-radius: 5px;
-    z-index: 1000; /* S'assure qu'il est au-dessus des autres éléments */
+    z-index: 1000;
     font-size: 16px;
+}
+
+.likes-count {
+    margin-right: 30px;
+    margin-left: 20px;
+
+}
+
+.media-title {
+    margin-left: 40px;
+
+
 }
