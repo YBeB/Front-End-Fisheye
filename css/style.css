@@ -74,6 +74,8 @@ color:#525252
 
 }
 
+
+
 @media (max-width: 1024px) {
     header {
         flex-direction: column;

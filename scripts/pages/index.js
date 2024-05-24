@@ -31,7 +31,7 @@ async function init() {
       displayData(photographers);
     }
   } catch (error) {
-    console.error("Failed to initialize data", error);
+    console.error("Impossibile d'initialiser les données", error);
   }
 }
 

@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
-  </head>
-  <body>
-    <header>
-      <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
-    </header>
-    <main id="main">
-      <div class="photograph-header">
-        <div class="text-profil"></div>
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-      </div>
-      <div class="album-container"></div>
-      <div id="total-likes">Total Likes: 0</div>
-    </main>
-    
 
-    <div id="contact_modal">
-      <div class="bground">
-			<div class="modal">
-				<header>
+<head>
+  <link href="css/style.css" rel="stylesheet" type="text/css" />
+  <meta charset="utf-8">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+  <title>Fisheye - photographe </title>
+</head>
+
+<body>
+  <header>
+    <a href="index.html"><img src="assets/images/logo.png" class="logo" /></a>
+  </header>
+  <main id="main">
+    <div class="photograph-header">
+      <div class="text-profil"></div>
+      <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+    </div>
+    <div class="sorting">
+    <p class="sorting_by">Trier par </p>
+    <select id="sort-criteria">
+      <option value="date">Date</option>
+      <option value="popularity">Popularité</option>
+      <option value="name">Nom</option>
+    </select>
+  </div>
+    <div class="album-container"></div>
+    <div id="total-likes">Total Likes: 0</div>
+  </main>
+
+
+  <div id="contact_modal">
+    <div class="bground">
+      <div class="modal">
+        <header>
           <h2 class="contact-me">Contactez-moi</h2>
 
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form>
-					<div>
-						<label for="firstname">Prénom</label>
-						<input type="text" id="firstname" name="firstname" />
+        <form id="contact_form">
+          <div>
+            <label for="firstname">Prénom</label>
+            <input type="text" id="firstname" name="firstname" />
+            <p class="error first">Veuillez entrer 2 caractères ou plus pour le champ du Prénom.</p>
             <label for="lastname">Nom</label>
-            <input type="text" id="lastname" name="lastname"/>
+            <input type="text" id="lastname" name="lastname" />
+            <p class="error last">Veuillez entrer 2 caractères ou plus pour le champ du nom.</p>
             <label for="email">Email</label>
-            <input type="email" id="email"name="email"/>
+            <input type="email" id="email" name="email" />
+            <p class="error mail">Veuillez entrer une adresse mail valide.</p>
             <label for="message">Votre message</label>
-            <input type="text" id="message" name="message"/>
-					</div>
+            <input type="text" id="message" name="message" />
+            <p class="error mess" >Veuillez remplir votre message.</p>
+          </div>
           <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        </form>
+      </div>
+    </div>
   </div>
   <div id="light-box" class="lightbox">
     <div class="light-box-flex">
@@ -54,18 +68,19 @@
       </div>
       <div class="light-box-body">
         <div id="lightbox-media-container">
-        <img src="" alt="" id="lightbox-image" class="lightbox-image">
-      </div>
+          <img src="" alt="" id="lightbox-image" class="lightbox-image">
+        </div>
         <button class="prev-button" onclick="previousMedia()">
           <img src="assets/icons/left-arrow.svg" alt="Previous Image">
         </button>
         <button class="next-button" onclick="nextMedia()">
           <img src="assets/icons/right-arrow.svg" alt="Next Image">
         </button>
-      </div> 
-    </div> 
-  </div> 
-    <script src="/scripts/pages/photographer.js"></script>
-    <script src="/scripts/utils/contactForm.js"></script>
-  </body>
+      </div>
+    </div>
+  </div>
+  <script src="/scripts/pages/photographer.js"></script>
+  <script src="/scripts/utils/contactForm.js"></script>
+</body>
+
 </html>
